@@ -11,7 +11,7 @@ paths = paths.map(p => {
 
 const generateVisited = function (path) {
   const visited = {};
-  let totalDistance = 0;
+  let pathDistance = 0;
   let currentX = 0;
   let currentY = 0;
 
@@ -21,7 +21,7 @@ const generateVisited = function (path) {
 
     for (let i = 0; i < distance; i++) {
       const posString = `${currentX},${currentY}`;
-      visited[posString] = visited[posString] || totalDistance;
+      visited[posString] = visited[posString] || pathDistance;
 
       switch (direction) {
         case 'L':
@@ -40,7 +40,7 @@ const generateVisited = function (path) {
           throw new Error();
       };
 
-      totalDistance += 1;
+      pathDistance += 1;
     }
   });
 
@@ -50,14 +50,14 @@ const generateVisited = function (path) {
 
 const distanceObjects = paths.map(generateVisited);
 const visitedSets = distanceObjects.map(o => new Set(Object.keys(o)));
-const intersections = [...visitedSets[0]].filter(p => {
-  return visitedSets[1].has(p);
+const intersections = visitedSets.reduce((acc, val) => {
+  return [...acc].filter(p => val.has(p));
 });
 
+console.log(intersections);
+
 const minDistance = intersections.reduce(function(currentMinDistance, intersection) {
-  const distanceA = distanceObjects[0][intersection];
-  const distanceB = distanceObjects[1][intersection];
-  const intersectionDistance = distanceA + distanceB;
+  const intersectionDistance = distanceObjects.map(o => o[intersection]).reduce((acc, val) => acc + val);
 
   if (intersectionDistance == 0) { 
     return currentMinDistance;
