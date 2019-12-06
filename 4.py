@@ -1,3 +1,5 @@
+import multiprocessing
+
 def is_valid(num):
     places = map(int, list(str(num)))
     same_adjacent = False
@@ -6,23 +8,20 @@ def is_valid(num):
         if places[i-1] > places[i]:
             return False
         if not same_adjacent:
-            if places[i-1] == places[i]:
-                same_adjacent = True
-                if (i > 1) and (places[i-2] == places[i]):
-                    same_adjacent = False
+            if (places[i-1] == places[i] and 
+                ((i == 1) or (places[i-2] != places[i])) and 
+                ((i == 5) or (places[i+1] != places[i]))):
 
-                if (i < 5) and (places[i+1] == places[i]):
-                    same_adjacent = False
+                same_adjacent = True
 
     return same_adjacent
 
-def something(start, end):
-    num_valid = 0
+if __name__ == '__main__':
+    pool = multiprocessing.Pool()
+    start = 171309
+    end = 643603
 
-    for n in range(start, end + 1):
-        if is_valid(n):
-            num_valid += 1
+    results = pool.map(is_valid, range(start, end+1))
+    pool.close()
 
-    return num_valid
-
-print(something(171309, 643603))
+    print(results.count(True))
