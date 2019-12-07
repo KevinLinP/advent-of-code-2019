@@ -36,7 +36,7 @@ def distance_grid(lengths):
 
     return grid
 
-wires = map(distance_grid, wires)
+wires = list(map(distance_grid, wires))
 setA = set(wires[0].keys())
 setB = set(wires[1].keys())
 intersections = setA.intersection(setB)

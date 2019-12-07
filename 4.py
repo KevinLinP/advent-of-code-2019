@@ -2,6 +2,8 @@ import multiprocessing
 
 def is_valid(num):
     places = map(int, list(str(num)))
+    places = list(places)
+    places = list(places)
     same_adjacent = False
 
     for i in range(1, 6):

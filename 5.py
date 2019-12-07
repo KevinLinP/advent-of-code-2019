@@ -1,5 +1,3 @@
-import math
-
 def run(originalInput = []):
     input = list(originalInput)
     output = []
@@ -36,7 +34,8 @@ def run(originalInput = []):
         }[opcode]
 
         parameters = map(lambda i: memory[pointer + 1 + i], range(0, num_parameters))
-        parameter_modes = math.floor(memory[pointer] / 100)
+        parameters = list(parameters)
+        parameter_modes = memory[pointer] // 100
 
         for i in range(0, num_read_parameters):
             parameter_mode = parameter_modes % 10
@@ -49,7 +48,7 @@ def run(originalInput = []):
                 print(parameter_mode)
                 raise Exception()
 
-            parameter_modes = math.floor(parameter_modes / 10)
+            parameter_modes = parameter_modes // 10
 
 
         if opcode == 1:
